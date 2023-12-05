@@ -5,7 +5,30 @@ M_IN_KM: int = 1000
 
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-    pass
+    def __init__(self,
+                 training_type: str,
+                 duration: float,
+                 distance: float,
+                 speed: float,
+                 calories: float
+                 ) -> None:
+        self.training_type = training_type
+        self.duration = duration
+        self.distance = distance
+        self.speed = speed
+        self.calories = calories
+
+    def __str__(self) -> str:
+        return self.get_message()
+
+    def get_message(self) -> str:
+        """Получить информационное сообщение о тренировке."""
+
+        return (f'Тип тренировки: {self.training_type}; '
+                f'Длительность: {self.duration:.3f} ч.; '
+                f'Дистанция: {self.distance:.3f} км; '
+                f'Ср. скорость: {self.speed:.3f} км/ч; '
+                f'Потрачено ккал: {self.calories:.3f}.')
 
 
 class Training:
@@ -41,7 +64,13 @@ class Training:
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
 
-        message_obj: InfoMessage = InfoMessage()
+        distance = self.get_distance()
+        speed = self.get_mean_speed()
+        calories = self.get_spend_calories()
+
+        message_obj: InfoMessage = InfoMessage(
+            training_type, self.duration, distance, speed, calories
+        )
         return message_obj
 
 
