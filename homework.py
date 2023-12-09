@@ -85,8 +85,8 @@ class Running(Training):
 
         mean_speed = super().get_mean_speed()
         spend_calories = ((self.CALORIES_MEAN_SPEED_MULTIPLIER * mean_speed
-                           + self.CALORIES_MEAN_SPEED_SHIFT) * super().weight
-                          / (M_IN_KM * super().duration
+                           + self.CALORIES_MEAN_SPEED_SHIFT) * self.weight
+                          / (M_IN_KM * self.duration
                              * self.CALORIES_DURATION_MULTIPLIER))
         return spend_calories
 
@@ -124,12 +124,12 @@ class SportsWalking(Training):
         """Получить количество затраченных калорий."""
 
         mean_speed = super().get_mean_speed()
-        spend_calories = ((self.CALORIES_WEIGHT_MULTIPLIER_1 * super().weight
+        spend_calories = ((self.CALORIES_WEIGHT_MULTIPLIER_1 * self.weight
                            + ((mean_speed
                                / self.CALORIES_MEAN_SPEAD_DIVIDER)**2
                                / self.height)
                            * (self.CALORIES_WEIGHT_MULTIPLIER_2
-                           * super().weight) * super().duration
+                              * self.weight) * self.duration
                            * self.CALORIES_DURATION_MULTIPLIER))
         return spend_calories
 
@@ -169,7 +169,7 @@ class Swimming(Training):
 
         mean_speed: float = 0.0
         mean_speed = (self.length_pool * self.count_pool
-                      / M_IN_KM / super().duration)
+                      / M_IN_KM / self.duration)
         return mean_speed
 
     def get_spent_calories(self) -> float:
@@ -178,7 +178,7 @@ class Swimming(Training):
         mean_speed = self.get_mean_speed()
         spend_calories = ((mean_speed + self.CALORIES_MEAN_SPEED_SHIFT)
                           * self.CALORIES_WEIGHT_MULTIPLIER
-                          * super().weight * super().duration)
+                          * self.weight * self.duration)
         return spend_calories
 
     def show_training_info(self) -> InfoMessage:
@@ -197,12 +197,19 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    pass
+
+    workout_types = {
+        'SWM': Swimming,
+        'RUN': Running,
+        'WLK': SportsWalking
+    }
+    return workout_types[workout_type](*data)
 
 
 def main(training: Training) -> None:
     """Главная функция."""
-    pass
+    info = training.show_training_info()
+    print(info)
 
 
 if __name__ == '__main__':
