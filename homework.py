@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field, asdict
+from dataclasses import asdict, dataclass, field
 
 
 @dataclass
@@ -18,7 +18,8 @@ class InfoMessage:
             'Дистанция: {distance:.3f} км; '
             'Ср. скорость: {speed:.3f} км/ч; '
             'Потрачено ккал: {calories:.3f}.'
-        )
+        ),
+        init=False
     )
 
     def __str__(self) -> str:
